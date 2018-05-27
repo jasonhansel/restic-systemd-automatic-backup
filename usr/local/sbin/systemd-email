@@ -14,7 +14,7 @@
 # says the limit when not using the Gmail webinterface but going directly to the SMTP server is 100-150 per day, which yelds maximum one email every
 # (24 * 60 * 60) / 100 = 864 second 
 # One option that I used with my old Axis cameras it to use my gmx.com accunt for sending emails instead, as there are (no?) higher limits there.
-MIN_WAIT_TIME_S=900
+MIN_WAIT_TIME_S=20
 SCRIPT_NAME=$(basename $0)
 LAST_RUN_FILE="/tmp/${SCRIPT_NAME}_last_run.txt"
 
