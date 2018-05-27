@@ -47,8 +47,8 @@ if ! waited_long_enough; then
 fi
 
 
-recipinent=$1
-system_unit=$2
+recipinent=$(cat /etc/admin-email)
+system_unit=$1
 
 sendmail -t <<ERRMAIL
 To: $recipinent
