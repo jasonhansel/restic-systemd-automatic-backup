@@ -43,10 +43,7 @@ restic unlock &
 wait $!
 
 # See restic-backup(1) or http://restic.readthedocs.io/en/latest/040_backup.html
-restic backup \
-	--exclude-file /.restic-excludes \
-	--one-file-system --exclude-caches \
-	/ &
+restic backup --one-file-system --exclude-caches / &
 wait $!
 
 # See restic-forget(1) or http://restic.readthedocs.io/en/latest/060_forget.html
