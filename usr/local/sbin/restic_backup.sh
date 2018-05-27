@@ -29,14 +29,9 @@ RETENTION_WEEKS=12
 RETENTION_MONTHS=18
 RETENTION_YEARS=4
 
-BACKUP_PATHS="/ /boot /home /mnt/media"
-BACKUP_EXCLUDES="--exclude-file /.rsync_exclude --exclude-file /mnt/media/.rsync_exclude --exclude-file /home/erikw/.rsync_exclude"
-BACKUP_TAG=systemd.timer
-
 # Set all environment variables like
 # B2_ACCOUNT_ID, B2_ACCOUNT_KEY, RESTIC_REPOSITORY etc.
 source /etc/restic/b2_env.sh
-
 
 # NOTE start all commands in background and wait for them to finish.
 # Reason: bash ignores any signals while child process is executing and thus my trap exit hook is not triggered.
@@ -48,19 +43,9 @@ restic unlock &
 wait $!
 
 # See restic-backup(1) or http://restic.readthedocs.io/en/latest/040_backup.html
-#restic backup --tag $BACKUP_TAG --one-file-system $BACKUP_EXCLUDES $BACKUP_PATHS &
-#wait $!
-
-# Until 
-# https://github.com/restic/restic/issues/1557
-# is fixed with the PR
-# https://github.com/restic/restic/pull/1494
-# we have to use a work-around and skip the --one-file-system and explicitly black-list the paths we don't want, as described here
-# https://forum.restic.net/t/full-system-restore/126/8?u=fd0
 restic backup \
-	--tag $BACKUP_TAG \
 	--exclude-file /.restic-excludes \
-	$BACKUP_EXCLUDES \
+	--one-file-system --exclude-caches \
 	/ &
 wait $!
 
@@ -77,9 +62,3 @@ wait $!
 # See restic-prune(1) or http://restic.readthedocs.io/en/latest/060_forget.html
 restic prune &
 wait $!
-
-
-# Check repository for errors.
-# NOTE this takes much time (and data transfer from remote repo?), do this in a separate systemd.timer which is run less often.
-#restic check &
-#wait $!

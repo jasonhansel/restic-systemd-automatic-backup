@@ -23,15 +23,7 @@ exit_hook() {
 	restic unlock
 }
 trap exit_hook INT TERM
-
-
-
 source /etc/restic/b2_env.sh
-
-# Remove locks from other stale processes to keep the automated backup running.
-# NOTE nope, dont' unlock liek restic_backup.sh. restic_backup.sh should take preceedance over this script.
-#restic unlock &
-#wait $!
 
 # Check repository for errors.
 restic check &
